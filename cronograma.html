@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Cronograma de Estudos PF - Semana 1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Cores tema Polícia Federal */
+            --primary-pf-blue: #003366; /* Azul escuro principal */
+            --secondary-pf-blue: #005090; /* Azul ligeiramente mais claro */
+            --accent-pf-gold: #FFD700;   /* Dourado para destaque */
+            --light-bg-pf: #eaf1f7;      /* Fundo muito claro azulado */
+            --text-color: #333;
+            --light-text-color: #666;
+            --card-bg: #ffffff;
+            --border-color: #c0d9eb; /* Borda mais suave */
+
+            /* Cores dos dias mantidas, mas harmonizadas com o tema PF */
+            --color-segunda: #283593; /* Indigo */
+            --color-terca: #4527a0;   /* Deep Purple */
+            --color-quarta: #6a1b9a;  /* Purple Dark */
+            --color-quinta: #1b5e20;  /* Dark Green */
+            --color-sexta: #e65100;   /* Orange Dark */
+            --color-domingo: #b71c1c; /* Dark Red */
+
+            /* Cores para estatísticas */
+            --stat-bar-color: var(--secondary-pf-blue);
+            --stat-text-color: var(--primary-pf-blue);
+
+            --transition-speed: 0.3s;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif; /* Fonte mais séria */
+            background-color: var(--light-bg-pf);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 1300px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Título Principal */
+        h1.page-title {
+            color: var(--primary-pf-blue);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3.2em;
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            transition: all var(--transition-speed) ease;
+        }
+        h1.page-title:hover {
+            background-color: var(--light-bg-pf);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h1.page-title:focus {
+            outline: 2px solid var(--secondary-pf-blue);
+            background-color: #f7fbff;
+        }
+
+        /* Navegação das Semanas */
+        .week-navigation {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            background-color: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .week-btn {
+            background-color: var(--light-bg-pf);
+            color: var(--primary-pf-blue);
+            border: 1px solid var(--border-color);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center; /* Centraliza o texto */
+            display: flex;
+            flex-direction: column; /* Coloca semana e data em coluna */
+            line-height: 1.2; /* Espaçamento entre as linhas */
+        }
+        .week-btn span.week-label {
+            font-size: 1.1em;
+            margin-bottom: 3px; /* Espaço entre label e data */
+        }
+        .week-btn span.week-date {
+            font-size: 0.8em;
+            color: var(--light-text-color);
+        }
+
+        .week-btn:hover {
+            background-color: var(--primary-pf-blue);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        .week-btn:hover span.week-date {
+            color: rgba(255, 255, 255, 0.8); /* Cor mais clara no hover */
+        }
+
+        .week-btn.active {
+            background-color: var(--secondary-pf-blue);
+            color: white;
+            border-color: var(--secondary-pf-blue);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+        .week-btn.active span.week-date {
+            color: rgba(255, 255, 255, 0.9); /* Cor da data na semana ativa */
+        }
+
+
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .day-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            border: 1px solid var(--border-color); /* Borda sutil */
+        }
+
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.3em;
+            background-color: var(--primary-pf-blue); /* Cor padrão do header */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Cores específicas para os cabeçalhos dos dias */
+        .day-card[data-day-color="Segunda-feira"] .day-header { background-color: var(--color-segunda); }
+        .day-card[data-day-color="Terça-feira"] .day-header { background-color: var(--color-terca); }
+        .day-card[data-day-color="Quarta-feira"] .day-header { background-color: var(--color-quarta); }
+        .day-card[data-day-color="Quinta-feira"] .day-header { background-color: var(--color-quinta); }
+        .day-card[data-day-color="Sexta-feira"] .day-header { background-color: var(--color-sexta); }
+        .day-card[data-day-color="Domingo"] .day-header { background-color: var(--color-domingo); }
+
+        .add-task-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8em;
+            cursor: pointer;
+            padding: 0 5px;
+            transition: transform 0.2s ease;
+        }
+        .add-task-btn:hover {
+            transform: scale(1.1);
+        }
+        .add-task-btn:active {
+            transform: scale(0.9);
+        }
+
+        .task-list {
+            list-style: none;
+            padding: 20px;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            position: relative;
+            background-color: #fcfdff; /* Fundo suave para item de tarefa */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: background-color 0.2s ease;
+        }
+        .task-item:last-child {
+            margin-bottom: 0;
+        }
+        .task-item:hover {
+            background-color: #f5f8ff;
+        }
+
+        .task-checkbox {
+            margin-right: 12px;
+            transform: scale(1.3);
+            cursor: pointer;
+            flex-shrink: 0;
+            accent-color: var(--secondary-pf-blue); /* Cor do checkbox */
+        }
+
+        .task-text {
+            flex-grow: 1;
+            padding: 5px 8px;
+            border-radius: 6px;
+            outline: none;
+            border: 1px solid transparent;
+            transition: border-color var(--transition-speed) ease, background-color var(--transition-speed) ease;
+            min-height: 25px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+        .task-text:focus {
+            border-color: var(--secondary-pf-blue);
+            background-color: #eaf1f7;
+        }
+
+        .completed .task-text {
+            text-decoration: line-through;
+            color: var(--light-text-color);
+            opacity: 0.8;
+        }
+        .completed .task-checkbox {
+            opacity: 0.8;
+        }
+
+        .tasks-progress {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            background-color: #f7f9fc;
+            text-align: right;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+        
+        .delete-task-btn {
+            background: none;
+            border: none;
+            color: #ccc;
+            font-size: 1.2em;
+            cursor: pointer;
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.2s ease, color 0.2s ease;
+        }
+        .task-item:hover .delete-task-btn {
+            opacity: 1;
+            color: #d32f2f; /* Vermelho para exclusão */
+        }
+        .delete-task-btn:hover {
+            color: #b71c1c;
+        }
+
+        /* Resumo da Semana */
+        .summary-section {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: space-around;
+            border: 1px solid var(--border-color);
+        }
+
+        .summary-section h2 {
+            color: var(--primary-pf-blue);
+            font-size: 2em;
+            font-weight: 700;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .summary-card {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .summary-card h3 {
+            color: var(--text-color);
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .most-studied-list {
+            list-style: none;
+            padding: 0;
+        }
+        .most-studied-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 0.98em;
+        }
+        .most-studied-item span:first-child {
+            color: var(--light-text-color);
+        }
+        .most-studied-item span:last-child {
+            font-weight: 700;
+            color: var(--stat-text-color);
+        }
+
+        .statistics-list {
+            list-style: none;
+            padding: 0;
+        }
+        .statistics-item {
+            margin-bottom: 20px;
+        }
+        .statistics-item label {
+                display: block;
+            margin-bottom: 8px;
+            color: var(--light-text-color);
+            font-size: 0.98em;
+            font-weight: 500;
+        }
+        .progress-bar-container {
+            background-color: #e0eaf2; /* Fundo da barra */
+            border-radius: 5px;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--stat-bar-color);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease-out;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
+        }
+        .statistics-item span {
+            display: block;
+            margin-top: 5px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--stat-text-color);
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .action-buttons button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color var(--transition-speed) ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
+
+        #reiniciar-btn {
+            background-color: #d32f2f; /* Vermelho mais escuro */
+            color: white;
+        }
+        #reiniciar-btn:hover {
+            background-color: #b71c1c;
+            transform: translateY(-2px);
+        }
+        #reiniciar-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        #salvar-btn {
+            background-color: var(--primary-pf-blue);
+            color: white;
+        }
+        #salvar-btn:hover {
+            background-color: var(--secondary-pf-blue);
+            transform: translateY(-2px);
+        }
+        #salvar-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.95em;
+            color: var(--light-text-color);
+            padding-top: 20px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 10px;
+            }
+            .main-container {
+                padding: 15px;
+            }
+            h1.page-title {
+                font-size: 2.2em;
+                margin-bottom: 20px;
+            }
+            .week-navigation {
+                padding: 10px;
+                gap: 8px;
+            }
+            .week-btn {
+                padding: 6px 10px; /* Reduz padding */
+                font-size: 0.8em; /* Reduz fonte */
+            }
+            .week-btn span.week-label {
+                font-size: 1em; /* Ajusta label */
+            }
+            .week-btn span.week-date {
+                font-size: 0.7em; /* Ajusta data */
+            }
+            .days-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .summary-section {
+                padding: 20px;
+                gap: 25px;
+            }
+            .summary-card {
+                min-width: unset;
+                width: 100%;
+            }
+            .action-buttons button {
+                width: 100%;
+                margin-bottom: 15px;
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .week-navigation {
+                flex-direction: column; /* Botões de semana em coluna em telas muito pequenas */
+            }
+            .week-btn {
+                width: 100%; /* Botões de semana ocupam 100% da largura */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h1 class="page-title" contenteditable="true">Meu Cronograma de Estudos PF</h1>
+
+        <div class="week-navigation" id="week-navigation">
+            </div>
+
+        <div class="days-grid" id="days-grid-container">
+            </div>
+
+        <div class="summary-section">
+            <h2>Resumo da Semana</h2>
+            <div class="summary-card">
+                <h3>Matérias mais estudadas</h3>
+                <ul id="most-studied-list" class="most-studied-list">
+                    </ul>
+            </div>
+            <div class="summary-card">
+                <h3>Estatísticas</h3>
+                <ul class="statistics-list">
+                    <li class="statistics-item">
+                        <label>Total de tarefas</label>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="total-tasks-bar"></div>
+                        </div>
+                        <span id="total-tasks-count">0/0</span>
+                    </li>
+                    <li class="statistics-item">
+                        <label>Progresso semanal</label>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                        <span id="completed-tasks-count">0/0</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button id="reiniciar-btn">🔄 Reiniciar Semana</button>
+            <button id="salvar-btn">✅ Salvar Alterações</button>
+        </div>
+
+        <p class="footer-note">"Combate ao crime e defesa do Estado Democrático de Direito." ⚖️</p>
+    </div>
+
+    <script>
+        // Definição das matérias e dias, com cores associadas para o tema PF
+        const initialDaysOfWeekStructure = [
+            { name: "Segunda-feira", colorVar: "--color-segunda", tasks: ["Informática (Aulas)", "Direito Administrativo (Lei 8.112)", "Direito Constitucional (CF/88 Art. 1º-5º)"] },
+            { name: "Terça-feira", colorVar: "--color-terca", tasks: ["Contabilidade (Teoria Geral)", "Direito Penal (Crimes Contra a Pessoa)", "Processo Penal (Inquérito Policial)"] },
+            { name: "Quarta-feira", colorVar: "--color-quarta", tasks: ["Português (Gramática)", "Direitos Humanos (DH na CF/88)", "Legislação Especial (Lei de Abuso de Autoridade)"] },
+            { name: "Quinta-feira", colorVar: "--color-quinta", tasks: ["Informática (Segurança da Info)", "Estatística (Probabilidade)", "Plano de Leitura (Doutrina Penal)"] },
+            { name: "Sexta-feira", colorVar: "--color-sexta", tasks: ["Contabilidade (Análise Balanço)", "Raciocínio Lógico (Problemas)", "Plano de Leitura (Notícias PF)"] },
+            { name: "Domingo", colorVar: "--color-domingo", tasks: ["Português (Simulados)", "Redação (Dissertação)", "Revisão Geral da Semana"] }
+        ];
+
+        const NUM_WEEKS = 9; // Total de semanas
+        let currentWeek = 1; // Semana ativa, padrão começa na Semana 1
+        const startDate = new Date('2025-05-26T00:00:00'); // Data de início: 26 de Maio de 2025 (Segunda-feira)
+
+        const localStoragePrefix = 'pf_study_planner_'; // Prefixo para dados da PF
+        const daysGridContainer = document.getElementById('days-grid-container');
+        const pageTitle = document.querySelector('.page-title');
+        const weekNavigation = document.getElementById('week-navigation');
+        const reiniciarBtn = document.getElementById('reiniciar-btn');
+        const salvarBtn = document.getElementById('salvar-btn');
+        const mostStudiedList = document.getElementById('most-studied-list');
+        const totalTasksBar = document.getElementById('total-tasks-bar');
+        const totalTasksCount = document.getElementById('total-tasks-count');
+        const progressBar = document.getElementById('progress-bar');
+        const completedTasksCount = document.getElementById('completed-tasks-count');
+
+        // --- Funções de Salvar/Carregar ---
+
+        // Salva o cronograma da semana ATUAL
+        function saveSchedule() {
+            const scheduleData = {};
+            document.querySelectorAll('.day-card').forEach(dayCard => {
+                const dayName = dayCard.dataset.dayName; // Usar data-day-name para salvar
+                const tasks = [];
+                dayCard.querySelectorAll('.task-item').forEach(taskItem => {
+                    tasks.push({
+                        text: taskItem.querySelector('.task-text').textContent,
+                        completed: taskItem.querySelector('.task-checkbox').checked
+                    });
+                });
+                scheduleData[dayName] = tasks;
+            });
+            localStorage.setItem(`${localStoragePrefix}schedule_week_${currentWeek}`, JSON.stringify(scheduleData));
+            console.log(`Cronograma da Semana ${currentWeek} salvo!`);
+            // Feedback visual para o botão "Salvar Alterações"
+            salvarBtn.textContent = '✅ Salvo!';
+            setTimeout(() => { salvarBtn.textContent = '✅ Salvar Alterações'; }, 2000);
+            updateStats();
+        }
+
+        // Carrega o cronograma da semana ATUAL
+        function loadSchedule() {
+            const savedSchedule = localStorage.getItem(`${localStoragePrefix}schedule_week_${currentWeek}`);
+            if (savedSchedule) {
+                return JSON.parse(savedSchedule);
+            }
+            // Retorna a estrutura inicial para a semana se não houver nada salvo
+            const initialData = {};
+            initialDaysOfWeekStructure.forEach(day => {
+                initialData[day.name] = day.tasks.map(task => ({ text: task, completed: false }));
+            });
+            return initialData;
+        }
+
+        // Salva o título principal do cronograma (que é único)
+        function saveTitle() {
+            localStorage.setItem(`${localStoragePrefix}title`, pageTitle.textContent);
+            updatePageTitleTag(); // Atualiza o título da aba
+        }
+
+        // Carrega o título principal do cronograma
+        function loadTitle() {
+            return localStorage.getItem(`${localStoragePrefix}title`) || "Meu Cronograma de Estudos PF"; // Padrão se não houver
+        }
+
+        // Salva a semana ativa atual
+        function saveCurrentWeek() {
+            localStorage.setItem(`${localStoragePrefix}currentWeek`, currentWeek);
+        }
+
+        // Carrega a semana ativa salva
+        function loadCurrentWeek() {
+            const savedWeek = localStorage.getItem(`${localStoragePrefix}currentWeek`);
+            return savedWeek ? parseInt(savedWeek) : 1; // Retorna 1 se não houver ou for inválido
+        }
+
+        // Atualiza o <title> da página no navegador
+        function updatePageTitleTag() {
+            document.title = `${pageTitle.textContent} - Semana ${currentWeek}`;
+        }
+
+        // --- Funções de Criação de Elementos ---
+
+        function createTaskItem(taskText, isCompleted = false) {
+            const taskItem = document.createElement('li');
+            taskItem.classList.add('task-item');
+            if (isCompleted) {
+                taskItem.classList.add('completed');
+            }
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.classList.add('task-checkbox');
+            checkbox.checked = isCompleted;
+            checkbox.addEventListener('change', saveSchedule); // Salva ao marcar/desmarcar
+
+            const textElement = document.createElement('div');
+            textElement.classList.add('task-text');
+            textElement.setAttribute('contenteditable', 'true');
+            textElement.textContent = taskText;
+            textElement.addEventListener('input', saveSchedule); // Salva ao editar
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-task-btn');
+            deleteBtn.innerHTML = '&times;'; // Símbolo de 'x'
+            deleteBtn.title = 'Excluir tarefa';
+            deleteBtn.addEventListener('click', () => {
+                taskItem.remove(); // Remove o item do DOM
+                saveSchedule(); // Salva o cronograma atualizado
+            });
+
+            taskItem.appendChild(checkbox);
+            taskItem.appendChild(textElement);
+            taskItem.appendChild(deleteBtn);
+            return taskItem;
+        }
+
+        function createDayCard(day) {
+            const dayCard = document.createElement('div');
+            dayCard.classList.add('day-card');
+            dayCard.dataset.dayName = day.name; // Usar para referência no JS
+            dayCard.dataset.dayColor = day.name; // Usar para aplicar cores via CSS
+
+            const dayHeader = document.createElement('div');
+            dayHeader.classList.add('day-header');
+            dayHeader.textContent = day.name;
+
+            const addTaskBtn = document.createElement('button');
+            addTaskBtn.classList.add('add-task-btn');
+            addTaskBtn.innerHTML = '+';
+            addTaskBtn.title = `Adicionar tarefa para ${day.name}`;
+            addTaskBtn.addEventListener('click', () => {
+                const taskList = dayCard.querySelector('.task-list');
+                const newTask = createTaskItem('', false); // Nova tarefa vazia
+                taskList.appendChild(newTask);
+                newTask.querySelector('.task-text').focus(); // Foca para o usuário digitar
+                saveSchedule();
+            });
+
+            dayHeader.appendChild(addTaskBtn);
+            dayCard.appendChild(dayHeader);
+
+            const taskList = document.createElement('ul');
+            taskList.classList.add('task-list');
+            dayCard.appendChild(taskList);
+
+            const tasksProgress = document.createElement('div');
+            tasksProgress.classList.add('tasks-progress');
+            tasksProgress.textContent = '0/0 concluídos'; // Será atualizado pelo JS
+            dayCard.appendChild(tasksProgress);
+
+            return dayCard;
+        }
+
+        // --- Funções de Geração e Atualização ---
+
+        function renderSchedule() {
+            daysGridContainer.innerHTML = ''; // Limpa o container
+            const currentWeekScheduleData = loadSchedule(); // Carrega dados da semana atual
+
+            initialDaysOfWeekStructure.forEach(dayTemplate => {
+                const dayCard = createDayCard(dayTemplate);
+                const taskList = dayCard.querySelector('.task-list');
+
+                // Carrega as tarefas para este dia da semana (da semana atual)
+                const tasksForDay = currentWeekScheduleData[dayTemplate.name] || [];
+                tasksForDay.forEach(task => {
+                    taskList.appendChild(createTaskItem(task.text, task.completed));
+                });
+                daysGridContainer.appendChild(dayCard);
+            });
+            updateStats(); // Atualiza as estatísticas após renderizar
+        }
+
+        function updateStats() {
+            let totalTasks = 0;
+            let completedTasks = 0;
+            const subjectCounts = {}; // Para 'Matérias mais estudadas'
+
+            document.querySelectorAll('.day-card').forEach(dayCard => {
+                const dayName = dayCard.dataset.dayName;
+                let dayCompleted = 0;
+                let dayTotal = 0;
+
+                dayCard.querySelectorAll('.task-item').forEach(taskItem => {
+                    const taskText = taskItem.querySelector('.task-text').textContent.trim();
+                    const isCompleted = taskItem.querySelector('.task-checkbox').checked;
+
+                    totalTasks++;
+                    dayTotal++;
+                    if (isCompleted) {
+                        completedTasks++;
+                    }
+
+                    // Contabiliza matérias para o resumo
+                    if (taskText) {
+                        // Tenta extrair a "matéria" (primeira parte do texto antes de '(' ou ',' )
+                        const primarySubjectMatch = taskText.match(/^[^,(]*/); // Pega tudo antes de '(' ou ','
+                        const primarySubject = primarySubjectMatch ? primarySubjectMatch[0].trim() : taskText.trim();
+                        
+                        if (primarySubject) {
+                             subjectCounts[primarySubject] = (subjectCounts[primarySubject] || 0) + 1;
+                        }
+                    }
+                });
+                // Atualiza o progresso local do dia
+                dayCard.querySelector('.tasks-progress').textContent = `${dayCompleted}/${dayTotal} concluídos`;
+            });
+
+            // --- Atualiza Matérias Mais Estudadas ---
+            const sortedSubjects = Object.entries(subjectCounts)
+                .sort(([, countA], [, countB]) => countB - countA)
+                .slice(0, 5); // Pega as 5 mais estudadas
+
+            mostStudiedList.innerHTML = '';
+            if (sortedSubjects.length > 0) {
+                sortedSubjects.forEach(([subject, count]) => {
+                    const li = document.createElement('li');
+                    li.classList.add('most-studied-item');
+                    li.innerHTML = `<span>${subject}</span> <span>${count} vezes</span>`;
+                    mostStudiedList.appendChild(li);
+                });
+            } else {
+                 mostStudiedList.innerHTML = '<li>Nenhuma matéria registrada ainda para esta semana.</li>';
+            }
+
+            // --- Atualiza Estatísticas Gerais ---
+            const overallProgressPercentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+            totalTasksCount.textContent = `${totalTasks} tarefas no total`;
+            totalTasksBar.style.width = '100%';
+            
+            completedTasksCount.textContent = `${completedTasks}/${totalTasks} concluídos (${overallProgressPercentage.toFixed(0)}%)`;
+            progressBar.style.width = `${overallProgressPercentage}%`;
+        }
+
+        // Reinicia a semana ATUAL
+        function restartCurrentWeek() {
+            if (confirm(`Tem certeza que deseja reiniciar a Semana ${currentWeek}? Isso irá desmarcar todas as tarefas e redefinir para o cronograma inicial desta semana.`)) {
+                localStorage.removeItem(`${localStoragePrefix}schedule_week_${currentWeek}`); // Remove os dados salvos da semana atual
+                renderSchedule(); // Renderiza com os dados iniciais da semana
+                updateStats(); // Atualiza as estatísticas
+                alert(`Semana ${currentWeek} reiniciada com sucesso!`);
+            }
+        }
+
+        // Formata uma data para DD/MM/AAAA
+        function formatDate(date) {
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Mês é 0-indexed
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Cria os botões de navegação das semanas com as datas
+        function createWeekNavigation() {
+            weekNavigation.innerHTML = ''; // Limpa navegação existente
+            let currentWeekDate = new Date(startDate); // Começa com a data inicial
+
+            for (let i = 1; i <= NUM_WEEKS; i++) {
+                const btn = document.createElement('button');
+                btn.classList.add('week-btn');
+                
+                const weekLabel = document.createElement('span');
+                weekLabel.classList.add('week-label');
+                weekLabel.textContent = `Semana ${i}`;
+                btn.appendChild(weekLabel);
+
+                const weekDate = document.createElement('span');
+                weekDate.classList.add('week-date');
+                weekDate.textContent = formatDate(currentWeekDate);
+                btn.appendChild(weekDate);
+
+                btn.dataset.week = i;
+
+                if (i === currentWeek) {
+                    btn.classList.add('active');
+                }
+
+                btn.addEventListener('click', (event) => {
+                    // Previne o comportamento padrão do botão (se for submit, por exemplo)
+                    event.preventDefault(); 
+                    
+                    // Encontra o botão clicado (pode ser o span dentro dele)
+                    const targetBtn = event.currentTarget; 
+
+                    // Salva o estado da semana atual antes de mudar
+                    saveSchedule(); 
+                    
+                    // Atualiza a semana ativa
+                    currentWeek = parseInt(targetBtn.dataset.week);
+                    saveCurrentWeek(); // Salva a nova semana ativa
+                    
+                    // Atualiza os botões de navegação
+                    document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+                    targetBtn.classList.add('active');
+                    
+                    renderSchedule(); // Renderiza o cronograma para a nova semana
+                    updatePageTitleTag(); // Atualiza o título da aba
+                });
+                weekNavigation.appendChild(btn);
+
+                // Adiciona 7 dias para a próxima semana
+                currentWeekDate.setDate(currentWeekDate.getDate() + 7);
+            }
+        }
+
+        // --- Inicialização ---
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Carrega a semana ativa (pode ter sido a última usada)
+            currentWeek = loadCurrentWeek();
+
+            // Carrega e define o título principal do cronograma
+            const savedMainTitle = loadTitle();
+            pageTitle.textContent = savedMainTitle;
+            
+            // Torna o título editável
+            pageTitle.addEventListener('input', saveTitle);
+
+            // Cria a navegação das semanas com as datas
+            createWeekNavigation();
+
+            // Renderiza o cronograma para a semana ativa
+            renderSchedule();
+            updatePageTitleTag(); // Garante que o título da aba esteja correto
+
+            // Adiciona eventos aos botões de ação
+            reiniciarBtn.addEventListener('click', restartCurrentWeek);
+            salvarBtn.addEventListener('click', saveSchedule); 
+        });
+    </script>
+</body>
+</html>
